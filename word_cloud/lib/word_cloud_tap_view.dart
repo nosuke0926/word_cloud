@@ -68,8 +68,6 @@ class _WordCloudTapViewState extends State<WordCloudTapView> {
     wordcloudsetting.setColorList(widget.colorlist);
     wordcloudsetting.setInitial();
     wordcloudsetting.drawTextOptimized();
-
-    
   }
 
   @override
@@ -80,14 +78,17 @@ class _WordCloudTapViewState extends State<WordCloudTapView> {
           List points = wordcloudsetting.textPoints;
           double w = wordcloudsetting.textlist[i].width;
           double h = wordcloudsetting.textlist[i].height;
-          if (points[i][0] < details.localPosition.dx &&
+
+          if (points[i].isNotEmpty &&
+              points[i][0] < details.localPosition.dx &&
               details.localPosition.dx < (points[i][0] + w) &&
               points[i][1] < details.localPosition.dy &&
               details.localPosition.dy < (points[i][1] + h)) {
-            if(widget.wordtap.getWordTaps().containsKey(widget.data.getData()[i]['word'] )){
+            if (widget.wordtap
+                .getWordTaps()
+                .containsKey(widget.data.getData()[i]['word'])) {
               widget.wordtap.getWordTaps()[widget.data.getData()[i]['word']]!();
             }
-            
           }
         }
       },
