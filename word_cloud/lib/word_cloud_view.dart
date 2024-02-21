@@ -17,6 +17,7 @@ class WordCloudView extends StatefulWidget {
   final double mintextsize;
   final double maxtextsize;
   final WordCloudShape? shape;
+  final Widget? title;
 
   const WordCloudView({
     super.key,
@@ -33,6 +34,7 @@ class WordCloudView extends StatefulWidget {
     this.mapcolor,
     this.decoration,
     this.colorlist,
+    this.title,
   });
   @override
   State<WordCloudView> createState() => _WordCloudViewState();
@@ -64,19 +66,28 @@ class _WordCloudViewState extends State<WordCloudView> {
         widget.fontFamily, widget.fontStyle, widget.fontWeight);
     wordcloudsetting.setColorList(widget.colorlist);
     wordcloudsetting.setInitial();
-    
+
     wordcloudsetting.drawTextOptimized();
-    
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.mapwidth,
-      height: widget.mapheight,
       color: widget.mapcolor,
       decoration: widget.decoration,
-      child: CustomPaint(
-        painter: WCpaint(wordcloudpaint: wordcloudsetting),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.title != null) widget.title!,
+          SizedBox(
+            width: widget.mapwidth,
+            height: widget.mapheight,
+            child: CustomPaint(
+              painter: WCpaint(wordcloudpaint: wordcloudsetting),
+            ),
+          ),
+        ],
       ),
     );
   }

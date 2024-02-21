@@ -115,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     WordCloudData wcdata = WordCloudData(data: word_list);
     WordCloudTap wordtaps = WordCloudTap();
 
@@ -135,47 +136,57 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Clicked Word : $wordstring',
-                style: const TextStyle(fontSize: 20),
-              ),
-              Text('Clicked Count : $count',
-                  style: const TextStyle(fontSize: 20)),
-              WordCloudTapView(
-                data: wcdata,
-                wordtap: wordtaps,
-                mapcolor: const Color.fromARGB(255, 174, 183, 235),
-                mapwidth: 500,
-                mapheight: 500,
-                fontWeight: FontWeight.bold,
-                shape: WordCloudCircle(radius: 250),
-                colorlist: const [
-                  Colors.black,
-                  Colors.redAccent,
-                  Colors.indigoAccent
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-                width: 30,
-              ),
-              WordCloudView(
-                data: wcdata,
-                mapcolor: const Color.fromARGB(255, 174, 183, 235),
-                mapwidth: 500,
-                mapheight: 500,
-                fontWeight: FontWeight.bold,
-                colorlist: const [
-                  Colors.black,
-                  Colors.redAccent,
-                  Colors.indigoAccent
-                ],
-              ),
-            ]),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Clicked Word : $wordstring',
+                  style: const TextStyle(fontSize: 20),
+                ),
+                Text('Clicked Count : $count',
+                    style: const TextStyle(fontSize: 20)),
+                WordCloudTapView(
+                  title: Text(
+                    "Word Cloud",
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  data: wcdata,
+                  wordtap: wordtaps,
+                  mapcolor: const Color.fromARGB(255, 174, 183, 235),
+                  mapwidth: size.width,
+                  mapheight: 500,
+                  fontWeight: FontWeight.bold,
+                  shape: WordCloudCircle(radius: 250),
+                  colorlist: const [
+                    Colors.black,
+                    Colors.redAccent,
+                    Colors.indigoAccent
+                  ],
+                ),
+                const SizedBox(
+                  height: 15,
+                  width: 30,
+                ),
+                WordCloudView(
+                  title: Text(
+                    "Word Cloud",
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  data: wcdata,
+                  mapcolor: const Color.fromARGB(255, 174, 183, 235),
+                  mapwidth: size.width,
+                  mapheight: 500,
+                  fontWeight: FontWeight.bold,
+                  colorlist: const [
+                    Colors.black,
+                    Colors.redAccent,
+                    Colors.indigoAccent
+                  ],
+                ),
+              ]),
+        ),
       ),
     );
   }

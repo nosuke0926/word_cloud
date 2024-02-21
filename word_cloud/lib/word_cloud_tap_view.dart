@@ -19,6 +19,7 @@ class WordCloudTapView extends StatefulWidget {
   final double maxtextsize;
   final WordCloudShape? shape;
   final WordCloudTap wordtap;
+  final Widget? title;
 
   const WordCloudTapView({
     super.key,
@@ -36,6 +37,7 @@ class WordCloudTapView extends StatefulWidget {
     this.mapcolor,
     this.decoration,
     this.colorlist,
+    this.title,
   });
   @override
   State<WordCloudTapView> createState() => _WordCloudTapViewState();
@@ -72,34 +74,44 @@ class _WordCloudTapViewState extends State<WordCloudTapView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onVerticalDragDown: (details) {
-        for (var i = 0; i < widget.data.getData().length; i++) {
-          List points = wordcloudsetting.textPoints;
-          double w = wordcloudsetting.textlist[i].width;
-          double h = wordcloudsetting.textlist[i].height;
+    return Container(
+      color: widget.mapcolor,
+      decoration: widget.decoration,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.title != null) widget.title!,
+          GestureDetector(
+            onVerticalDragDown: (details) {
+              for (var i = 0; i < widget.data.getData().length; i++) {
+                List points = wordcloudsetting.textPoints;
+                double w = wordcloudsetting.textlist[i].width;
+                double h = wordcloudsetting.textlist[i].height;
 
-          if (points[i].isNotEmpty &&
-              points[i][0] < details.localPosition.dx &&
-              details.localPosition.dx < (points[i][0] + w) &&
-              points[i][1] < details.localPosition.dy &&
-              details.localPosition.dy < (points[i][1] + h)) {
-            if (widget.wordtap
-                .getWordTaps()
-                .containsKey(widget.data.getData()[i]['word'])) {
-              widget.wordtap.getWordTaps()[widget.data.getData()[i]['word']]!();
-            }
-          }
-        }
-      },
-      child: Container(
-        width: widget.mapwidth,
-        height: widget.mapheight,
-        color: widget.mapcolor,
-        decoration: widget.decoration,
-        child: CustomPaint(
-          painter: WCTpaint(wordcloudpaint: wordcloudsetting),
-        ),
+                if (points[i].isNotEmpty &&
+                    points[i][0] < details.localPosition.dx &&
+                    details.localPosition.dx < (points[i][0] + w) &&
+                    points[i][1] < details.localPosition.dy &&
+                    details.localPosition.dy < (points[i][1] + h)) {
+                  if (widget.wordtap
+                      .getWordTaps()
+                      .containsKey(widget.data.getData()[i]['word'])) {
+                    widget.wordtap
+                        .getWordTaps()[widget.data.getData()[i]['word']]!();
+                  }
+                }
+              }
+            },
+            child: SizedBox(
+              width: widget.mapwidth,
+              height: widget.mapheight,
+              child: CustomPaint(
+                painter: WCTpaint(wordcloudpaint: wordcloudsetting),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
