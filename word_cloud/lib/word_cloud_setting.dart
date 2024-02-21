@@ -243,6 +243,10 @@ class WordCloudSetting {
   }
 
   void drawTextOptimized() {
+    if (textCenter.isEmpty) {
+      return;
+    }
+
     drawIn(0, textCenter[0][0], textCenter[0][1]);
     isdrawed[0] = true;
     bool checkattempt = false;
