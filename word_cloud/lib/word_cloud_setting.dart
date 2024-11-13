@@ -253,6 +253,12 @@ class WordCloudSetting {
     for (var i = 1; i < textlist.length; i++) {
       double w = textlist[i].width;
       double h = textlist[i].height;
+
+      // 単語の幅が描画エリアより大きい場合はスキップ
+      if (w > mapX) {
+        continue;
+      }
+
       int attempts = 0;
 
       bool isadded = false;
@@ -296,6 +302,12 @@ class WordCloudSetting {
     for (var i = 1; i < textlist.length; i++) {
       double w = textlist[i].width;
       double h = textlist[i].height;
+
+      // 単語の幅が描画エリアより大きい場合はスキップ
+      if (w > mapX) {
+        continue;
+      }
+
       int attempts = 0;
 
       bool isadded = false;
