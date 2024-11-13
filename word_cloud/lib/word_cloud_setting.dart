@@ -91,7 +91,6 @@ class WordCloudSetting {
   }
 
   void setInitial() {
-    //map = [[]];
     textCenter = [];
     textPoints = [];
     textlist = [];
@@ -102,22 +101,9 @@ class WordCloudSetting {
 
     map = setMap(shape);
 
-    // for (var i = 0; i < mapX; i++) {
-    //   for (var j = 0; j < mapY; j++) {
-    //     if (pow(i - (mapX / 2), 2) + pow(j - (mapY / 2), 2) > pow(250, 2)) {
-    //       map[i].add(1);
-    //     } else {
-    //       map[i].add(0);
-    //     }
-    //   }
-    //   map.add([]);
-    // }
-
     for (var i = 0; i < data.length; i++) {
-      // double denominator = data[0]['value'] - data[data.length - 1]['value'];
       double denominator =
           (data[0]['value'] - data[data.length - 1]['value']) * 1.0;
-
       double getTextSize;
       if (denominator != 0) {
         getTextSize = (minTextSize * (data[0]['value'] - data[i]['value']) +
@@ -145,10 +131,15 @@ class WordCloudSetting {
         ..textAlign = TextAlign.center
         ..layout();
 
-      textlist.add(textPainter);
+      // テキストが描画エリアの幅を超える場合はスキップ
+      if (textPainter.width > mapX) {
+        continue; // この単語をスキップ
+      }
 
-      double centerCorrectionX = centerX - textlist[i].width / 2;
-      double centerCorrectionY = centerY - textlist[i].height / 2;
+      // 条件を満たす単語のみリストに追加
+      textlist.add(textPainter);
+      double centerCorrectionX = centerX - textlist.last.width / 2;
+      double centerCorrectionY = centerY - textlist.last.height / 2;
       textCenter.add([centerCorrectionX, centerCorrectionY]);
       textPoints.add([]);
       isdrawed.add(false);
@@ -233,10 +224,17 @@ class WordCloudSetting {
 
   void drawIn(int index, double x, double y) {
     textPoints[index] = [x, y];
-    for (int i = x.toInt(); i < x.toInt() + textlist[index].width; i++) {
-      for (int j = y.toInt();
-          j < y.toInt() + textlist[index].height.floor();
-          j++) {
+    int width = textlist[index].width.toInt();
+    int height = textlist[index].height.floor();
+
+    for (int i = x.toInt(); i < x.toInt() + width; i++) {
+      // `i` が `mapX` の範囲内に収まるようにチェック
+      if (i < 0 || i >= mapX) continue;
+
+      for (int j = y.toInt(); j < y.toInt() + height; j++) {
+        // `j` が `mapY` の範囲内に収まるようにチェック
+        if (j < 0 || j >= mapY) continue;
+
         map[i][j] = 1;
       }
     }

@@ -101,8 +101,9 @@ class WCpaint extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (var i = 0; i < wordcloudpaint.getDataLength(); i++) {
-      if (wordcloudpaint.isdrawed[i]) {
+    for (var i = 0; i < wordcloudpaint.getTextPainter().length; i++) {
+      // 各リストの長さが一致していることを前提とした描画処理
+      if (i < wordcloudpaint.isdrawed.length && wordcloudpaint.isdrawed[i]) {
         wordcloudpaint.getTextPainter()[i].paint(
             canvas,
             Offset(wordcloudpaint.getWordPoint()[i][0],
